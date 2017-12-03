@@ -28,7 +28,8 @@ public class Labirinto implements GLEventListener, KeyListener {
     static boolean visualizar = true, vencedor = false;
     static Camera camera = new Camera();
     public static float avancar = 3.5f, retroceder = 3.5f, girar = 0;
-    int startList, x;
+    int startList, x = -1;
+    boolean control = false;
     boolean[] keybuffer = new boolean[256];
     float[] spotDir = {0, 1, 0};
     
@@ -111,11 +112,14 @@ public class Labirinto implements GLEventListener, KeyListener {
 	gl.glEnable(GL2.GL_LIGHT1);
 	// Habilita o depth-buffering
 	gl.glEnable(GL.GL_DEPTH_TEST);
+        
+        
 
 
     }
 
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+        
         gl = drawable.getGL().getGL2();
 
         if (height <= 0) { // evita uma divisão por zero!!!
@@ -135,6 +139,13 @@ public class Labirinto implements GLEventListener, KeyListener {
 
     @Override
     public void display(GLAutoDrawable drawable) {
+        
+        
+        if(!control && !gerar_num){
+            gerador_numero();
+        }
+        
+        
         gl = drawable.getGL().getGL2();
 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -196,19 +207,14 @@ public class Labirinto implements GLEventListener, KeyListener {
 
             }
             gl.glPopMatrix();
-            gl.glPushMatrix();
-            {
-                gl.glTranslatef(0.5f, 0.1f, -2.5f);
-                gl.glRotatef(90, 0, 1, 0);
-                gl.glColor3f(1, 0, 0);
-                glut.glutSolidCube(0.1f);
-            }
-            gl.glPopMatrix();
+
             girar += 0.2f;
 
             gl.glFlush();
             }
+            gerar_num = false;
         } else { //desenha a tela de
+            
             habilitaLuz(gl);
             gl.glTranslatef(0, 0, -5);
             gl.glPushMatrix();
@@ -263,13 +269,20 @@ public class Labirinto implements GLEventListener, KeyListener {
 
             instrucao = true;
             lock = true;
+            control = false;
         }
     }
 
     public void gerador_numero() {
+        if(!control){
+            Random random = new Random();
+            x = random.nextInt(11);
+            System.out.println(x);
+            control = true;
+        }
         if (gerar_num) {
             Random random = new Random();
-            int x = random.nextInt(11);
+            x = random.nextInt(11);
             System.out.println(x);
         }
     }
@@ -487,6 +500,7 @@ public class Labirinto implements GLEventListener, KeyListener {
         if (keybuffer['i'] || keybuffer['I']) {
             instrucao = false;
             p.i = true;
+            control = false;
         }
         if (keybuffer['w'] || keybuffer['W']) {
             camera.moveForward(-0.25f);
