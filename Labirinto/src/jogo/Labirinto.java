@@ -105,7 +105,7 @@ public class Labirinto implements GLEventListener, KeyListener {
 	gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, posicaoLuz,0 );
 
 	// Habilita a definição da cor do material a partir da cor corrente
-	//gl.glEnable(GL2.GL_COLOR_MATERIAL);
+	gl.glEnable(GL2.GL_COLOR_MATERIAL);
 	//Habilita o uso de iluminação
 	gl.glEnable(GL2.GL_LIGHTING);  
 	// Habilita a luz de número 0
@@ -223,7 +223,7 @@ public class Labirinto implements GLEventListener, KeyListener {
             glut.glutBitmapString(glut.BITMAP_HELVETICA_18, " ****** INSTRUÇÃO DO JOGO ******");
             gl.glPopMatrix();
             String descicao = "O JOGO É UM LABIRINTO NO QUAL O OBJETIVO É ENCONTRAR"
-                    + "UM JARRO QUE ESTÁ ESCONDIDO DENTRO DO CENÁRIO.";
+                    + " UM JARRO QUE ESTÁ ESCONDIDO DENTRO DO CENÁRIO.";
 
             gl.glPushMatrix();
             gl.glColor3f(1, 1, 1);
@@ -233,9 +233,26 @@ public class Labirinto implements GLEventListener, KeyListener {
 
             gl.glPushMatrix();
             gl.glColor3f(1, 1, 1);
-            gl.glRasterPos2d(-2.0, 0.7);
+            gl.glRasterPos2d(-2.0, 0.8);
             glut.glutBitmapString(glut.BITMAP_HELVETICA_12, descicao);
             gl.glPopMatrix();
+            
+            
+            String desc = "Obs. A POSIÇÃO DO JARRO É GERADA ALEATÓRIAMENTE ASSIM"
+                    + " QUE ELE FOR ENCONTRADO.";
+            
+            gl.glPushMatrix();
+            gl.glColor3f(1, 1, 1);
+            gl.glRasterPos2d(-2.0, 0.7);
+            glut.glutBitmapString(glut.BITMAP_HELVETICA_12, desc);
+            gl.glPopMatrix();
+            
+            gl.glPushMatrix();
+            gl.glColor3f(1, 1, 1);
+            gl.glRasterPos2d(-2.0, 0.5);
+            glut.glutBitmapString(glut.BITMAP_HELVETICA_12, "TECLAS PARA MOVIMENTAÇÃO DO JOGADOR: ");
+            gl.glPopMatrix();
+            
 
             //Ensina o usuário a usar as teclas para movimentação dentro do jogo
             gl.glPushMatrix();
@@ -260,10 +277,16 @@ public class Labirinto implements GLEventListener, KeyListener {
             gl.glRasterPos2d(-2, 0.1);
             glut.glutBitmapString(glut.BITMAP_HELVETICA_18, "S - MOVE O JOGADOR PARA TRÁS");
             gl.glPopMatrix();
+            
+            gl.glPushMatrix();
+            gl.glColor3f(1, 1, 1);
+            gl.glRasterPos2d(-2, 0.0);
+            glut.glutBitmapString(glut.BITMAP_HELVETICA_18, "V - ALTERA A VISUALIZAÇÃO DO LABIRINTO");
+            gl.glPopMatrix();
 
             gl.glPushMatrix();
             gl.glColor3f(1, 1, 1);
-            gl.glRasterPos2d(-2, -0.8);
+            gl.glRasterPos2d(-2, -0.3);
             glut.glutBitmapString(glut.BITMAP_HELVETICA_18, "PRESSIONE A TECLA ' i ' PARA INICIAR");
             gl.glPopMatrix();
 
@@ -320,7 +343,7 @@ public class Labirinto implements GLEventListener, KeyListener {
         gl.glColor3f(1, 0, 0);
         gl.glTranslatef(3.5f, 0.5f, -2.5f);
         gl.glRotatef(girar, 0, 1, 0);
-        gl.glColor3f(1, 0.6f, 0);
+        gl.glColor3f(1, 0, 0);
         glut.glutSolidTeapot(0.1f);
         System.out.println(camPosition.X + " - " + camPosition.Y + " - " + camPosition.Z);
         p.x = camPosition.X;
