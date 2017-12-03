@@ -28,7 +28,7 @@ public class Labirinto implements GLEventListener, KeyListener {
     static boolean visualizar = true, vencedor = false;
     static Camera camera = new Camera();
     public static float avancar = 3.5f, retroceder = 3.5f, girar = 0;
-    int startList, x = -1;
+    int startList, x = 300;
     boolean control = false;
     boolean[] keybuffer = new boolean[256];
     float[] spotDir = {0, 1, 0};
@@ -113,9 +113,6 @@ public class Labirinto implements GLEventListener, KeyListener {
 	// Habilita o depth-buffering
 	gl.glEnable(GL.GL_DEPTH_TEST);
         
-        
-
-
     }
 
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -158,10 +155,9 @@ public class Labirinto implements GLEventListener, KeyListener {
 
         if (vencedor == false) {
             visualizarJogo(gl, camPosition, camTarget, upVector);
-        }
-        if (p.i) {
+        } if (p.i) {
             if(lock){
-            if (visualizar == false) {
+                if (visualizar == false) {
                 gl.glPushMatrix();
                 {
                     p.x = camPosition.X;
@@ -198,10 +194,12 @@ public class Labirinto implements GLEventListener, KeyListener {
 
             gl.glPushMatrix();
             {
-                if (x < 5) {
-                    x_Zero(gl, camPosition);
-                } else {
+                if(x >= 0 && x <= 3){
                     x_Um(gl, camPosition);
+                } else if (x > 3 && x <= 6) {
+                    x_Dois(gl, camPosition);
+                } else {
+                    x_Zero(gl, camPosition);
                 }
                 
 
@@ -293,6 +291,7 @@ public class Labirinto implements GLEventListener, KeyListener {
             instrucao = true;
             lock = true;
             control = false;
+            
         }
     }
 
@@ -302,8 +301,7 @@ public class Labirinto implements GLEventListener, KeyListener {
             x = random.nextInt(11);
             System.out.println(x);
             control = true;
-        }
-        if (gerar_num) {
+        } if (gerar_num) {
             Random random = new Random();
             x = random.nextInt(11);
             System.out.println(x);
@@ -333,12 +331,9 @@ public class Labirinto implements GLEventListener, KeyListener {
 
                 glu.gluLookAt(-10, 8, -10, 19, -15.0f, -10, 0, 1, 0);
             }
-        } else {
-
         }
     }
 
-//x gerado aleatóriamente x >= 0 && x < 5
     public void x_Zero(GL2 gl, Vetor3d camPosition) {
         gl.glColor3f(1, 0, 0);
         gl.glTranslatef(3.5f, 0.5f, -2.5f);
@@ -357,9 +352,27 @@ public class Labirinto implements GLEventListener, KeyListener {
             System.out.println("ENTROU NA CONDIÇAO!!!");
         }
     }
-
-    //x gerado aleatóriamente x >= 5 && x < 10
+    
     public void x_Um(GL2 gl, Vetor3d camPosition) {
+        gl.glColor3f(0, 1, 0);
+        gl.glTranslatef(1.5f, 0.5f, -4.5f);
+        gl.glRotatef(girar, 0, 1, 0);
+        gl.glColor3f(0, 1, 1);
+        glut.glutSolidTeapot(0.1f);
+        System.out.println(camPosition.X + " - " + camPosition.Y + " - " + camPosition.Z);
+        p.x = camPosition.X;
+        p.y = camPosition.Y;
+        p.z = camPosition.Z;
+        if ((camPosition.X >= -1.8 && camPosition.X <= -1.3) && (camPosition.Z <= -12.0 && camPosition.Z >= -14.0)) {
+            gerar_num = true;
+            lock = false;
+            p.i = false;
+            camera.reset();
+            System.out.println("ENTROU NA CONDIÇAO!!!");
+        }
+    }
+    
+    public void x_Dois(GL2 gl, Vetor3d camPosition) {
         gl.glColor3f(1, 0, 0);
         gl.glTranslatef(4.5f, 0.5f, -2.5f);
         gl.glRotatef(girar, 0, 1, 0);
@@ -376,7 +389,6 @@ public class Labirinto implements GLEventListener, KeyListener {
             p.i = false;
             camera.reset();
             System.out.println("ENTROU NA CONDIÇAO!!!");
-
         }
     }
 
