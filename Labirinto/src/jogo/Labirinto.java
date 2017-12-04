@@ -32,17 +32,17 @@ public class Labirinto implements GLEventListener, KeyListener {
     boolean control = false;
     boolean[] keybuffer = new boolean[256];
     float[] spotDir = {0, 1, 0};
-    
+
     //Informacoes sobre a luz
-    float luzAmbiente[]  ={0.2f,0.2f,0.2f,1.0f};
-    float luzDifusa[]    ={1.0f,1.0f,1.0f,1.0f};	   // "cor"
-    float luzEspecular[] ={1.0f, 1.0f, 1.0f, 1.0f};// "brilho"
-    float posicaoLuz[]   ={0.0f, 40.0f, 50.0f, 1.0f};
-    
+    float luzAmbiente[] = {0.2f, 0.2f, 0.2f, 1.0f};
+    float luzDifusa[] = {1.0f, 1.0f, 1.0f, 1.0f};	   // "cor"
+    float luzEspecular[] = {1.0f, 1.0f, 1.0f, 1.0f};// "brilho"
+    float posicaoLuz[] = {0.0f, 40.0f, 50.0f, 1.0f};
+
     // Informacoes sobre o material
-    float especularidade[]={1.0f,0.0f,0.0f,1.0f};
+    float especularidade[] = {1.0f, 0.0f, 0.0f, 1.0f};
     int especMaterial = 60;
-    double eqn[]={-0.15,0.15,0,0};
+    double eqn[] = {-0.15, 0.15, 0, 0};
     boolean instrucao = false;
     boolean r = false;
     boolean gerar_num = false, lock = false;
@@ -51,6 +51,7 @@ public class Labirinto implements GLEventListener, KeyListener {
     GLUT glut = new GLUT();
     GLU glu = new GLU();
     Player p = new Player();
+    boolean first = true;
 
     public Labirinto() {
         GLJPanel canvas = new GLJPanel();
@@ -87,36 +88,36 @@ public class Labirinto implements GLEventListener, KeyListener {
         //gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         gl.glShadeModel(GL2.GL_SMOOTH); //  ou GL_FLAT
-        
-        // Define a reflet�ncia do material 
-        gl.glMaterialfv(GL.GL_FRONT_AND_BACK,GL2.GL_SPECULAR, especularidade,0);
-        
-        // Define a concentração do brilho
-	gl.glMateriali(GL.GL_FRONT_AND_BACK,GL2.GL_SHININESS, especMaterial);
-        
-        gl.glMaterialfv(GL.GL_FRONT_AND_BACK,GL2.GL_DIFFUSE, especularidade,0);
-        // Ativa o uso da luz ambiente 
-	gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, luzAmbiente,0);
-        
-        // Define os parâmetros da luz de número 0
-	gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_AMBIENT,  luzAmbiente,0); 
-	gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_DIFFUSE,  luzDifusa  ,0 );
-	gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_SPECULAR, luzEspecular,0 );
-	gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, posicaoLuz,0 );
 
-	// Habilita a definição da cor do material a partir da cor corrente
-	gl.glEnable(GL2.GL_COLOR_MATERIAL);
-	//Habilita o uso de iluminação
-	gl.glEnable(GL2.GL_LIGHTING);  
-	// Habilita a luz de número 0
-	gl.glEnable(GL2.GL_LIGHT1);
-	// Habilita o depth-buffering
-	gl.glEnable(GL.GL_DEPTH_TEST);
-        
+        // Define a reflet�ncia do material 
+        gl.glMaterialfv(GL.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, especularidade, 0);
+
+        // Define a concentração do brilho
+        gl.glMateriali(GL.GL_FRONT_AND_BACK, GL2.GL_SHININESS, especMaterial);
+
+        gl.glMaterialfv(GL.GL_FRONT_AND_BACK, GL2.GL_DIFFUSE, especularidade, 0);
+        // Ativa o uso da luz ambiente 
+        gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, luzAmbiente, 0);
+
+        // Define os parâmetros da luz de número 0
+        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_AMBIENT, luzAmbiente, 0);
+        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_DIFFUSE, luzDifusa, 0);
+        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_SPECULAR, luzEspecular, 0);
+        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, posicaoLuz, 0);
+
+        // Habilita a definição da cor do material a partir da cor corrente
+        gl.glEnable(GL2.GL_COLOR_MATERIAL);
+        //Habilita o uso de iluminação
+        gl.glEnable(GL2.GL_LIGHTING);
+        // Habilita a luz de número 0
+        gl.glEnable(GL2.GL_LIGHT1);
+        // Habilita o depth-buffering
+        gl.glEnable(GL.GL_DEPTH_TEST);
+
     }
 
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-        
+
         gl = drawable.getGL().getGL2();
 
         if (height <= 0) { // evita uma divisão por zero!!!
@@ -136,13 +137,11 @@ public class Labirinto implements GLEventListener, KeyListener {
 
     @Override
     public void display(GLAutoDrawable drawable) {
-        
-        
-        if(!control && !gerar_num){
+
+        if (!control && !gerar_num) {
             gerador_numero();
         }
-        
-        
+
         gl = drawable.getGL().getGL2();
 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -155,64 +154,64 @@ public class Labirinto implements GLEventListener, KeyListener {
 
         if (vencedor == false) {
             visualizarJogo(gl, camPosition, camTarget, upVector);
-        } if (p.i) {
-            if(lock){
+        }
+        if (p.i) {
+            if (lock) {
                 if (visualizar == false) {
+                    gl.glPushMatrix();
+                    {
+                        p.x = camPosition.X;
+                        p.y = camPosition.Y;
+                        p.z = camPosition.Z;
+
+                        gl.glTranslatef(p.x, p.y, p.z);
+                        //System.out.println(camPosition.X + " -- " + camPosition.Y + " -- " + camPosition.Z);
+
+                        gl.glScalef(1, 2, 1);
+                        gl.glColor3f(0.5f, 0.5f, 1);
+                        //desenha cubo que atuará como jogador
+                        glut.glutSolidCube(0.2f);
+
+                    }
+                    gl.glPopMatrix();
+                }
+
                 gl.glPushMatrix();
                 {
-                    p.x = camPosition.X;
-                    p.y = camPosition.Y;
-                    p.z = camPosition.Z;
+                    habilitaLuz(gl);
+                }
+                gl.glPopMatrix();
+                glu.gluLookAt(4, 0, 9, 3, 0, -3, 0, 1, 0);
 
-                    gl.glTranslatef(p.x, p.y, p.z);
-                    //System.out.println(camPosition.X + " -- " + camPosition.Y + " -- " + camPosition.Z);
+                gl.glPushMatrix();
+                {
+                    gl.glColor3f(1, 1, 1);
+                    desenharPiso();
+                    verParedes();
+                    porParedes();
+                }
+                gl.glPopMatrix();
 
-                    gl.glScalef(1, 2, 1);
-                    gl.glColor3f(0.5f, 0.5f, 1);
-                    //desenha cubo que atuará como jogador
-                    glut.glutSolidCube(0.2f);
+                gl.glPushMatrix();
+                {
+                    if (x >= 0 && x <= 3) {
+                        x_Um(gl, camPosition);
+                    } else if (x > 3 && x <= 6) {
+                        x_Dois(gl, camPosition);
+                    } else {
+                        x_Zero(gl, camPosition);
+                    }
 
                 }
                 gl.glPopMatrix();
-            }
 
-            gl.glPushMatrix();
-            {
-                habilitaLuz(gl);
-            }
-            gl.glPopMatrix();
-            glu.gluLookAt(4, 0, 9, 3, 0, -3, 0, 1, 0);
+                girar += 0.2f;
 
-            gl.glPushMatrix();
-            {
-                gl.glColor3f(1, 1, 1);
-                desenharPiso();
-                verParedes();
-                porParedes();
-            }
-            gl.glPopMatrix();
-
-            gl.glPushMatrix();
-            {
-                if(x >= 0 && x <= 3){
-                    x_Um(gl, camPosition);
-                } else if (x > 3 && x <= 6) {
-                    x_Dois(gl, camPosition);
-                } else {
-                    x_Zero(gl, camPosition);
-                }
-                
-
-            }
-            gl.glPopMatrix();
-
-            girar += 0.2f;
-
-            gl.glFlush();
+                gl.glFlush();
             }
             gerar_num = false;
         } else { //desenha a tela de
-            
+
             habilitaLuz(gl);
             gl.glTranslatef(0, 0, -5);
             gl.glPushMatrix();
@@ -234,23 +233,21 @@ public class Labirinto implements GLEventListener, KeyListener {
             gl.glRasterPos2d(-2.0, 0.8);
             glut.glutBitmapString(glut.BITMAP_HELVETICA_12, descicao);
             gl.glPopMatrix();
-            
-            
+
             String desc = "Obs. A POSIÇÃO DO JARRO É GERADA ALEATÓRIAMENTE ASSIM"
                     + " QUE ELE FOR ENCONTRADO.";
-            
+
             gl.glPushMatrix();
             gl.glColor3f(1, 1, 1);
             gl.glRasterPos2d(-2.0, 0.7);
             glut.glutBitmapString(glut.BITMAP_HELVETICA_12, desc);
             gl.glPopMatrix();
-            
+
             gl.glPushMatrix();
             gl.glColor3f(1, 1, 1);
             gl.glRasterPos2d(-2.0, 0.5);
             glut.glutBitmapString(glut.BITMAP_HELVETICA_12, "TECLAS PARA MOVIMENTAÇÃO DO JOGADOR: ");
             gl.glPopMatrix();
-            
 
             //Ensina o usuário a usar as teclas para movimentação dentro do jogo
             gl.glPushMatrix();
@@ -275,7 +272,7 @@ public class Labirinto implements GLEventListener, KeyListener {
             gl.glRasterPos2d(-2, 0.1);
             glut.glutBitmapString(glut.BITMAP_HELVETICA_18, "S - MOVE O JOGADOR PARA TRÁS");
             gl.glPopMatrix();
-            
+
             gl.glPushMatrix();
             gl.glColor3f(1, 1, 1);
             gl.glRasterPos2d(-2, 0.0);
@@ -291,17 +288,21 @@ public class Labirinto implements GLEventListener, KeyListener {
             instrucao = true;
             lock = true;
             control = false;
-            
+
         }
     }
 
     public void gerador_numero() {
-        if(!control){
-            Random random = new Random();
-            x = random.nextInt(11);
-            System.out.println(x);
-            control = true;
-        } if (gerar_num) {
+        if (first) {
+            if (!control) {
+                Random random = new Random();
+                x = random.nextInt(11);
+                System.out.println(x);
+                control = true;
+            }
+            first = false;
+        }
+        if (gerar_num) {
             Random random = new Random();
             x = random.nextInt(11);
             System.out.println(x);
@@ -348,11 +349,12 @@ public class Labirinto implements GLEventListener, KeyListener {
             gerar_num = true;
             lock = false;
             p.i = false;
+            first = true;
             camera.reset();
             System.out.println("ENTROU NA CONDIÇAO!!!");
         }
     }
-    
+
     public void x_Um(GL2 gl, Vetor3d camPosition) {
         gl.glColor3f(0, 1, 0);
         gl.glTranslatef(1.5f, 0.5f, -4.5f);
@@ -367,11 +369,12 @@ public class Labirinto implements GLEventListener, KeyListener {
             gerar_num = true;
             lock = false;
             p.i = false;
+            first = true;
             camera.reset();
             System.out.println("ENTROU NA CONDIÇAO!!!");
         }
     }
-    
+
     public void x_Dois(GL2 gl, Vetor3d camPosition) {
         gl.glColor3f(1, 0, 0);
         gl.glTranslatef(4.5f, 0.5f, -2.5f);
@@ -387,6 +390,7 @@ public class Labirinto implements GLEventListener, KeyListener {
             gerar_num = true;
             lock = false;
             p.i = false;
+            first = true;
             camera.reset();
             System.out.println("ENTROU NA CONDIÇAO!!!");
         }
